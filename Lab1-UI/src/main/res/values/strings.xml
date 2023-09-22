@@ -1,4 +1,22 @@
 <resources>
     <string name="app_name">LabsCM20232-Gr03</string>
-    <string name="personal_data_title">Personal Data</string>
+    <string name="personal_data_title">Información Personal</string>
+    <string name="personal_data_sex_men">Hombre</string>
+    <string name="personal_data_sex_woman">Mujer</string>
+    <string name="personal_data_names">Nombres</string>
+    <string name="personal_data_last_name">Apellidos</string>
+    <string name="personal_data_sex">Sexo:</string>
+    <string name="personal_data_next">Siguiente</string>
+    <string name="personal_data_birthdate">Fecha de Nacimiento:</string>
+    <string name="personal_data_birthdate_change">Cambiar:</string>
+    <string name="personal_data_level_schooling">Cambiar:</string>
+    <string name="personal_data_level_schooling_pri">Primaria</string>
+    <string name="personal_data_level_schooling_sec">Secundaria</string>
+    <string name="personal_data_level_schooling_uni">Universitaria</string>
+    <string name="personal_data_level_schooling_oth">Otro</string>
+
+    <string name="contact_data_title">Información de Contacto</string>
+    <string name="contact_data_go_back_to">Regresar</string>
+
+    <string name="details_data_title">Detalles</string>
 </resources>

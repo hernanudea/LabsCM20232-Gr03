@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -16,8 +17,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import co.edu.udea.compumovil.gr03_20232.lab1.R
 import co.edu.udea.compumovil.gr03_20232.lab1.components.MainButton
 import co.edu.udea.compumovil.gr03_20232.lab1.components.MainIconButton
 import co.edu.udea.compumovil.gr03_20232.lab1.components.Space
@@ -31,9 +34,9 @@ fun ContactDataActivityView(navController: NavController, id: String, optional: 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { TitleBar(name = "Details View") },
+                title = { TitleBar(name = stringResource(R.string.contact_data_title)) },
                 colors = TopAppBarDefaults.mediumTopAppBarColors(
-                    containerColor = Color.Cyan
+                    containerColor = MaterialTheme.colorScheme.primary
                 ),
                 navigationIcon = {
                     MainIconButton(icon = Icons.Default.ArrowBack) {
@@ -63,7 +66,7 @@ fun ContentContactDataActivity(navController: NavController, id: String, optiona
         }else{
             TitleView(name = optional.orEmpty())
         }
-        MainButton(name = "Return Home", backColor = Color.Blue, color = Color.White) {
+        MainButton(name = stringResource(R.string.contact_data_go_back_to), backColor = MaterialTheme.colorScheme.primary, color = MaterialTheme.colorScheme.onPrimary) {
             navController.popBackStack()
         }
     }

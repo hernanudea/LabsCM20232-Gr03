@@ -1,29 +1,41 @@
 package co.edu.udea.compumovil.gr03_20232.lab1.components
 
+import android.app.DatePickerDialog
+import android.content.Context
+import android.icu.util.Calendar
+import android.widget.DatePicker
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonColors
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import co.edu.udea.compumovil.gr03_20232.lab1.R
+import java.util.Date
 
 
 @Composable
@@ -52,8 +64,15 @@ fun MainButton(name: String, backColor: Color, color: Color, onClick: () -> Unit
     }
 }
 
+@Composable
+fun PersonIcon() {
+    Icon(imageVector = Icons.Default.Person, contentDescription = "Icon person")
+}
 
-/***************************************radio button*********************************/
+@Composable
+fun MainText(text: String) {
+    Text(text = text)
+}
 
 @Composable
 fun LabelledRadioButton(
@@ -108,6 +127,42 @@ fun RadioGroupWithSelectable(
                 selected = item == selection,
                 onClick = null
             )
+        }
+    }
+}
+
+@Composable
+fun MainDatePicker(
+    mDate: MutableState<String>,
+    mYear: Int,
+    mMonth: Int,
+    mDay: Int,
+    mCalendar: Calendar,
+    mContext: Context
+) {
+    mCalendar.time = Date()
+
+    val mDatePickerDialog = DatePickerDialog(
+        mContext,
+        { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
+            mDate.value = "$mDayOfMonth/${mMonth + 1}/$mYear"
+        }, mYear, mMonth, mDay
+    )
+    Row(modifier = Modifier.fillMaxWidth()) {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            MainText(text = stringResource(R.string.personal_data_birthdate))
+            MainText(text = "${mDate.value}")
+        }
+        Spacer(modifier = Modifier.size(100.dp))
+        MainButton(
+            name = stringResource(R.string.personal_data_birthdate_change),
+            backColor = MaterialTheme.colorScheme.primary,
+            color = MaterialTheme.colorScheme.onPrimary
+        ) {
+            mDatePickerDialog.show()
         }
     }
 }
