@@ -26,12 +26,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import co.edu.udea.compumovil.gr03_20232.lab1.R
+import co.edu.udea.compumovil.gr03_20232.lab1.components.DropdownDemo
 import co.edu.udea.compumovil.gr03_20232.lab1.components.MainButton
 import co.edu.udea.compumovil.gr03_20232.lab1.components.MainDatePicker
 import co.edu.udea.compumovil.gr03_20232.lab1.components.PersonIcon
 import co.edu.udea.compumovil.gr03_20232.lab1.components.RadioGroupWithSelectable
 import co.edu.udea.compumovil.gr03_20232.lab1.components.Space
 import co.edu.udea.compumovil.gr03_20232.lab1.components.TitleBar
+import androidx.compose.runtime.remember as remember1
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -54,15 +56,17 @@ fun HomePersonalDataActivityView(navController: NavController) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ContentPersonalDataActivity(navController: NavController) {
-    var name by remember { mutableStateOf("") }
-    var lastName by remember { mutableStateOf("") }
+    var name by remember1 { mutableStateOf("") }
+    var lastName by remember1 { mutableStateOf("") }
     val sexOptions = listOf(
         stringResource(R.string.personal_data_sex_men),
         stringResource(R.string.personal_data_sex_woman)
     )
-    val currentSelection = remember { mutableStateOf(sexOptions.first()) }
+    val currentSelection = remember1 { mutableStateOf(sexOptions.first()) }
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(5.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -92,7 +96,7 @@ fun ContentPersonalDataActivity(navController: NavController) {
         )
         Space()
 
-        val mDate = remember { mutableStateOf("") }
+        val mDate = remember1 { mutableStateOf("") }
         val mContext = LocalContext.current
         val mCalendar = Calendar.getInstance()
 
@@ -100,7 +104,25 @@ fun ContentPersonalDataActivity(navController: NavController) {
         val mMonth = mCalendar.get(Calendar.MONTH)
         val mDay = mCalendar.get(Calendar.DAY_OF_MONTH)
         MainDatePicker(mDate, mYear, mMonth, mDay, mCalendar, mContext)
+
         Space()
+
+        val itemsDropDown = listOf(
+            stringResource(R.string.personal_data_level_schooling),
+            stringResource(R.string.personal_data_level_schooling_pri),
+            stringResource(R.string.personal_data_level_schooling_sec),
+            stringResource(R.string.personal_data_level_schooling_uni),
+            stringResource(R.string.personal_data_level_schooling_oth)
+        )
+        var expanded by remember { mutableStateOf(false) }
+        var selectedIndex by remember { mutableStateOf(0) }
+
+
+//        MainText(text = stringResource(R.string.personal_data_level_schooling))
+        DropdownDemo(itemsDropDown, expanded, selectedIndex)
+
+//        PhoneNumberTypeMenu()
+
         MainButton(
             name = stringResource(R.string.personal_data_next),
             backColor = MaterialTheme.colorScheme.primary,
@@ -110,3 +132,5 @@ fun ContentPersonalDataActivity(navController: NavController) {
         }
     }
 }
+
+

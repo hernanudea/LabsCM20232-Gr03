@@ -9,7 +9,7 @@
     <string name="personal_data_next">Siguiente</string>
     <string name="personal_data_birthdate">Fecha de Nacimiento:</string>
     <string name="personal_data_birthdate_change">Cambiar:</string>
-    <string name="personal_data_level_schooling">Cambiar:</string>
+    <string name="personal_data_level_schooling">Grado de escolaridad:</string>
     <string name="personal_data_level_schooling_pri">Primaria</string>
     <string name="personal_data_level_schooling_sec">Secundaria</string>
     <string name="personal_data_level_schooling_uni">Universitaria</string>
