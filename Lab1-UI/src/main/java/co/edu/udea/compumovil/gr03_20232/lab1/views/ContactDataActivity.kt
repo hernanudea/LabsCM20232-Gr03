@@ -69,6 +69,13 @@ fun ContentContactDataActivity(navController: NavController, id: String, optiona
         MainButton(name = stringResource(R.string.contact_data_go_back_to), backColor = MaterialTheme.colorScheme.primary, color = MaterialTheme.colorScheme.onPrimary) {
             navController.popBackStack()
         }
+        MainButton(
+            name = stringResource(R.string.personal_data_next),
+            backColor = MaterialTheme.colorScheme.primary,
+            color = MaterialTheme.colorScheme.onPrimary
+        ) {
+            navController.navigate("Details")
+        }
     }
 
 }

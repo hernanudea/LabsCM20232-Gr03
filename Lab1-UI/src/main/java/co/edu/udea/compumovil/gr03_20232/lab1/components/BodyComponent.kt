@@ -7,7 +7,6 @@ import android.widget.DatePicker
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.icons.Icons
@@ -178,42 +176,35 @@ fun MainDatePicker(
 }
 
 @Composable
-fun DropdownDemo(items: List<String>, expanded: Boolean, selectedIndex: Int) {
+fun DropdownDemo(selectedName: MutableState<String>, items: List<String>) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedName by remember { mutableStateOf("") }
-    Box(
-        modifier = Modifier
-//            .fillMaxSize()
-            .wrapContentSize(Alignment.Center)
-    ) {
-        Text(
-//            items[selectedI],
-            if (selectedName.equals("")) items[0] else selectedName,
 
-//            selectedName ?: stringResource(R.string.personal_data_level_schooling),
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable(onClick = { expanded = true })
-                .background(Color.White)
-        )
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false },
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    MaterialTheme.colorScheme.onPrimary
-                )
-        ) {
-            items.forEachIndexed { index, s ->
-                DropdownMenuItem(
-                    text = { Text(items[index]) },
-                    onClick = { expanded = false; selectedName = s }
-                )
-            }
+    Text(
+        if (selectedName.value.isEmpty()) items[0] else selectedName.value,
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = { expanded = true })
+            .background(Color.White)
+    )
+
+    DropdownMenu(
+        expanded = expanded,
+        onDismissRequest = { expanded = false },
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.onPrimary)
+    ) {
+        items.forEachIndexed { index, s ->
+            DropdownMenuItem(
+                text = { Text(items[index]) },
+                enabled = !items[index].equals(stringResource(R.string.personal_data_level_schooling)),
+                onClick = {
+                    expanded = false
+                    selectedName.value = s
+                }
+            )
         }
     }
 }
-
 
 
