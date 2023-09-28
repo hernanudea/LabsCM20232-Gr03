@@ -4,9 +4,15 @@ import android.annotation.SuppressLint
 import android.icu.util.Calendar
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -29,6 +35,7 @@ import co.edu.udea.compumovil.gr03_20232.lab1.R
 import co.edu.udea.compumovil.gr03_20232.lab1.components.DropdownDemo
 import co.edu.udea.compumovil.gr03_20232.lab1.components.MainButton
 import co.edu.udea.compumovil.gr03_20232.lab1.components.MainDatePicker
+import co.edu.udea.compumovil.gr03_20232.lab1.components.MainIcon
 import co.edu.udea.compumovil.gr03_20232.lab1.components.PersonIcon
 import co.edu.udea.compumovil.gr03_20232.lab1.components.RadioGroupWithSelectable
 import co.edu.udea.compumovil.gr03_20232.lab1.components.Space
@@ -60,6 +67,7 @@ fun ContentPersonalDataActivity(navController: NavController) {
     var lastName by remember { mutableStateOf("") }
     val mDate = remember { mutableStateOf("") }
     var selectedName by remember { mutableStateOf("") }
+    var selectedSchoolGradeOption by mutableStateOf("")
 
     val sexOptions = listOf(
         stringResource(R.string.personal_data_sex_men),
@@ -85,21 +93,28 @@ fun ContentPersonalDataActivity(navController: NavController) {
             value = lastName,
             onValueChange = { lastName = it },
             leadingIcon = { PersonIcon() },
+//            leadingIcon = { Icons.Default.Person },
             label = { Text(text = stringResource(R.string.personal_data_last_name)) })
         Space()
-        RadioGroupWithSelectable(
-            modifier = Modifier
-                .padding(16.dp)
-                .fillMaxWidth(),
-            items = sexOptions,
-            selection = currentSelection.value,
-            onItemClick = { clickedItem ->
-                currentSelection.value = clickedItem
-            },
-            stringResource(R.string.personal_data_sex)
-        )
-        Space()
+        Row {
+            MainIcon(icon = Icons.Default.AccountCircle,
+                description = stringResource(R.string.personal_data_sex))
+            RadioGroupWithSelectable(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+                items = sexOptions,
+                selection = currentSelection.value,
+                onItemClick = { clickedItem ->
+                    currentSelection.value = clickedItem
+                },
+                stringResource(R.string.personal_data_sex)
 
+            )
+
+        }
+
+        Space()
 
         val mContext = LocalContext.current
         val mCalendar = Calendar.getInstance()
@@ -120,7 +135,9 @@ fun ContentPersonalDataActivity(navController: NavController) {
         )
         Space()
 
-        DropdownDemo(selectedName = mutableStateOf(selectedName), items = itemsDropDown, )
+        DropdownDemo(selectedName = mutableStateOf(selectedName), items = itemsDropDown) {
+                newSelectedSchoolGradeOption -> selectedSchoolGradeOption = newSelectedSchoolGradeOption
+        }
 
         Space()
 
@@ -129,11 +146,13 @@ fun ContentPersonalDataActivity(navController: NavController) {
             backColor = MaterialTheme.colorScheme.primary,
             color = MaterialTheme.colorScheme.onPrimary
         ) {
+            println("\n\n**************************************************")
             println("name: ${name}")
             println("lastName: ${lastName}")
             println("currentSelection: ${currentSelection.value}")
             println("mDate: ${mDate.value}")
-            println("selectedName: ${selectedName}")
+            println("selectedSchoolGradeOption: ${selectedSchoolGradeOption}")
+            println("**************************************************\n\n")
             navController.navigate("Contact/${name}/?${lastName}/${currentSelection.value}")
         }
 
