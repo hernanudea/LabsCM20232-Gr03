@@ -16,7 +16,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -51,25 +50,26 @@ fun ContactDataActivityView(navController: NavController, id: String, optional: 
 }
 
 @Composable
-fun ContentContactDataActivity(navController: NavController, id: String, optional: String?) {
+fun ContentContactDataActivity(navController: NavController, name: String, lastName: String?) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        TitleView(name = "Details View")
+//        TitleView(name = "Details View")
+//        Space()
+        TitleView(name = name)
         Space()
-        TitleView(name = id)
-        Space()
-        if (optional==""){
+        if (lastName==""){
             Spacer(modifier = Modifier.height(0.dp))
         }else{
-            TitleView(name = optional.orEmpty())
+            TitleView(name = lastName.orEmpty())
         }
-        MainButton(name = stringResource(R.string.contact_data_go_back_to), backColor = MaterialTheme.colorScheme.primary, color = MaterialTheme.colorScheme.onPrimary) {
-            navController.popBackStack()
-        }
-        MainButton(
+//        MainButton(isEnable = true, name = stringResource(R.string.contact_data_go_back_to),
+//            backColor = MaterialTheme.colorScheme.primary, color = MaterialTheme.colorScheme.onPrimary) {
+//            navController.popBackStack()
+//        }
+        MainButton(isEnable = true,
             name = stringResource(R.string.personal_data_next),
             backColor = MaterialTheme.colorScheme.primary,
             color = MaterialTheme.colorScheme.onPrimary

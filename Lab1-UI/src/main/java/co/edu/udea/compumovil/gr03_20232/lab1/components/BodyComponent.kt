@@ -3,7 +3,6 @@ package co.edu.udea.compumovil.gr03_20232.lab1.components
 import android.app.DatePickerDialog
 import android.content.Context
 import android.icu.util.Calendar
-import android.support.v4.os.IResultReceiver.Default
 import android.widget.DatePicker
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -28,7 +26,6 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonColors
 import androidx.compose.material3.RadioButtonDefaults
@@ -49,6 +46,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import co.edu.udea.compumovil.gr03_20232.lab1.R
+import co.edu.udea.compumovil.gr03_20232.lab1.views.validateRequiredFields
 import java.util.Date
 
 
@@ -67,12 +65,12 @@ fun Space() {
 }
 
 @Composable
-fun MainButton(name: String, backColor: Color, color: Color, onClick: () -> Unit) {
+fun MainButton(isEnable: Boolean, name: String, backColor: Color, color: Color, onClick: () -> Unit) {
     Button(
         onClick = onClick, colors = ButtonDefaults.buttonColors(
             contentColor = color,
             containerColor = backColor
-        )
+        ), enabled = isEnable
     ) {
         Text(text = name)
     }
@@ -192,7 +190,7 @@ fun MainDatePicker(
             MainText(text = "${mDate.value}")
         }
         Spacer(modifier = Modifier.size(50.dp))
-        MainButton(
+        MainButton(isEnable = true,
             name = stringResource(R.string.personal_data_birthdate_change),
             backColor = MaterialTheme.colorScheme.primary,
             color = MaterialTheme.colorScheme.onPrimary
