@@ -5,8 +5,10 @@ import android.content.Context
 import android.icu.util.Calendar
 import android.widget.DatePicker
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Person
@@ -26,6 +29,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonColors
 import androidx.compose.material3.RadioButtonDefaults
@@ -39,14 +43,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import co.edu.udea.compumovil.gr03_20232.lab1.R
-import co.edu.udea.compumovil.gr03_20232.lab1.views.validateRequiredFields
 import java.util.Date
 
 
@@ -65,12 +70,20 @@ fun Space() {
 }
 
 @Composable
-fun MainButton(isEnable: Boolean, name: String, backColor: Color, color: Color, onClick: () -> Unit) {
+fun MainButton(
+    isEnable: Boolean,
+    name: String,
+    backColor: Color,
+    color: Color,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+) {
     Button(
         onClick = onClick, colors = ButtonDefaults.buttonColors(
             contentColor = color,
             containerColor = backColor
-        ), enabled = isEnable
+        ), enabled = isEnable,
+        modifier = modifier
     ) {
         Text(text = name)
     }
@@ -85,21 +98,16 @@ fun PersonIcon() {
 fun MainIcon(icon: ImageVector, description: String) {
     Icon(imageVector = icon, contentDescription = description)
 }
-//@OptIn(ExperimentalMaterial3Api::class)
-//@Composable
-//fun MainOutlinedTextField(valueName: String, icon: Icons, label: String, valueChange: String){
-//    OutlinedTextField(
-//        value = valueName,
-//        onValueChange = valueChange,
-//        leadingIcon = icon,
-//        label = MainText(text = label))
-//}
+
+@Composable
+fun MainIcon(icon: Painter, description: String) {
+    Icon(painter = icon, contentDescription = description)
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainText(text: String) {
-//    OutlinedTextField(value = "sss", onValueChange = {s: String ->  println(s) })
-    Text(text = text)
+fun MainText(text: String, modifier: Modifier = Modifier) {
+    Text(text = text, modifier = modifier)
 }
 
 @Composable
@@ -133,15 +141,41 @@ fun LabelledRadioButton(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CustomOutlinedTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    label: String,
+    keyboardOptions: KeyboardOptions,
+    leadingIcon: @Composable (() -> Unit)
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        keyboardOptions = keyboardOptions,
+        leadingIcon = leadingIcon,
+        label = { Text(text = label) }
+    )
+}
+
 @Composable
 fun RadioGroupWithSelectable(
-    modifier: Modifier,
     items: List<String>,
     selection: String,
-    onItemClick: ((String) -> Unit),
-    textlabel: String
+    onItemClick: (String) -> Unit,
+    textlabel: String,
+    icon: Painter,
+    modifier: Modifier
 ) {
-    Row(modifier = modifier.selectableGroup()) {
+    Row(
+        modifier = modifier
+            .selectableGroup()
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(painter = icon, contentDescription = null)
         Text(text = textlabel)
         items.forEach { item ->
             LabelledRadioButton(
@@ -166,7 +200,8 @@ fun MainDatePicker(
     mMonth: Int,
     mDay: Int,
     mCalendar: Calendar,
-    mContext: Context
+    mContext: Context,
+    onDateSelected: (String) -> Unit
 ) {
     mCalendar.time = Date()
 
@@ -174,26 +209,33 @@ fun MainDatePicker(
         mContext,
         { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
             mDate.value = "$mDayOfMonth/${mMonth + 1}/$mYear"
+            onDateSelected(mDate.value)
         }, mYear, mMonth, mDay
     )
-    Row(modifier = Modifier.fillMaxWidth()) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center,
+    ) {
         Column(
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+            horizontalAlignment = Alignment.CenterHorizontally,
+
+            ) {
             Row() {
                 MainIcon(
-                    icon = Icons.Default.DateRange, description = stringResource(R.string.personal_data_birthdate)
+                    icon = Icons.Default.DateRange,
+                    description = stringResource(R.string.personal_data_birthdate)
                 )
                 MainText(text = stringResource(R.string.personal_data_birthdate))
             }
             MainText(text = "${mDate.value}")
         }
         Spacer(modifier = Modifier.size(50.dp))
-        MainButton(isEnable = true,
+        MainButton(
+            isEnable = true,
             name = stringResource(R.string.personal_data_birthdate_change),
             backColor = MaterialTheme.colorScheme.primary,
-            color = MaterialTheme.colorScheme.onPrimary
+            color = MaterialTheme.colorScheme.onPrimary,
         ) {
             mDatePickerDialog.show()
         }
@@ -208,13 +250,27 @@ fun DropdownDemo(
 ) {
     var expanded by remember { mutableStateOf(false) }
 
-    Text(
-        if (selectedName.value.isEmpty()) items[0] else selectedName.value,
+    Box(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = { expanded = true })
-            .background(Color.White)
-    )
+//            .background(Color.White)
+            .border(1.dp, Color.Gray, shape = MaterialTheme.shapes.small)
+            .padding(6.dp),
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            MainIcon(icon = painterResource(id = R.drawable.baseline_school_24), description = "")
+
+            Spacer(modifier = Modifier.weight(1f)) // Espaciado flexible
+            Text(
+//                text = if (selectedName.value.isEmpty()) items[0] else selectedName.value,
+                text = selectedName.value,
+                modifier = Modifier.padding(4.dp)
+            )
+        }
+    }
 
     DropdownMenu(
         expanded = expanded,
