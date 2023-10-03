@@ -18,6 +18,42 @@
 
     <string name="contact_data_title">Información de Contacto</string>
     <string name="contact_data_go_back_to">Regresar</string>
+    <string name="contact_data_phone">*Teléfono</string>
+    <string name="contact_data_address">Dirección</string>
+    <string name="contact_data_email">*Correo</string>
+    <string name="contact_data_country">*País</string>
+    <string name="contact_data_city">Ciudad</string>
+
+    <string name="country_1">Estados Unidos</string>
+    <string name="country_2">Canadá</string>
+    <string name="country_3">Reino Unido</string>
+    <string name="country_4">Australia</string>
+    <string name="country_5">Alemania</string>
+    <string name="country_6">Francia</string>
+    <string name="country_7">España</string>
+    <string name="country_8">Italia</string>
+    <string name="country_9">Japón</string>
+    <string name="country_10">China</string>
+    <string name="country_11">Brasil</string>
+    <string name="country_12">México</string>
+    <string name="country_13">India</string>
+    <string name="country_14">Sudáfrica</string>
+    <string name="country_15">Argentina</string>
+    <string name="country_16">Rusia</string>
+    <string name="country_17">Países Bajos</string>
+    <string name="country_18">Suecia</string>
+    <string name="country_19">Noruega</string>
+    <string name="country_20">Suiza</string>
+
+    <string name="city_1" translatable="false">Barranquilla</string>
+    <string name="city_2" translatable="false">Bogotá</string>
+    <string name="city_3" translatable="false">Cali</string>
+    <string name="city_4" translatable="false">Cartagena</string>
+    <string name="city_5" translatable="false">Ebéjico</string>
+    <string name="city_6" translatable="false">Manizalez</string>
+    <string name="city_7" translatable="false">Medellín</string>
+
 
     <string name="details_data_title">Detalles</string>
+    <string name="personal_data_send">Enviar</string>
 </resources>

@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.absolutePadding
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -40,6 +41,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -57,26 +59,17 @@ import java.util.Date
 
 
 @Composable
-fun TitleView(name: String) {
-    Text(
-        text = name,
-        fontSize = 40.sp,
-        fontWeight = FontWeight.Bold
-    )
-}
-
-@Composable
 fun SpaceH() {
     Spacer(modifier = Modifier.width(10.dp))
 }
 
 @Composable
 fun SpaceV() {
-    Spacer(modifier = Modifier.height(2.dp))
+    Spacer(modifier = Modifier.height(5.dp))
 }
 
 @Composable
-fun MainButton(
+fun CustomButton(
     isEnable: Boolean,
     name: String,
     backColor: Color,
@@ -96,28 +89,28 @@ fun MainButton(
 }
 
 @Composable
-fun PersonIcon() {
+fun CustomPersonIcon() {
     Icon(imageVector = Icons.Default.Person, contentDescription = "Icon person")
 }
 
 @Composable
-fun MainIcon(icon: ImageVector, description: String) {
+fun CustomIcon(icon: ImageVector, description: String) {
     Icon(imageVector = icon, contentDescription = description)
 }
 
 @Composable
-fun MainIcon(icon: Painter, description: String) {
+fun CustomIcon(icon: Painter, description: String) {
     Icon(painter = icon, contentDescription = description)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainText(text: String, modifier: Modifier = Modifier) {
+fun CustomText(text: String, modifier: Modifier = Modifier) {
     Text(text = text, modifier = modifier)
 }
 
 @Composable
-fun LabelledRadioButton(
+fun CustomRadioButton(
     modifier: Modifier = Modifier,
     label: String,
     selected: Boolean,
@@ -166,7 +159,7 @@ fun CustomOutlinedTextField(
 }
 
 @Composable
-fun RadioGroupWithSelectable(
+fun CustomRadioGroupSelectable(
     items: List<String>,
     selection: String,
     onItemClick: (String) -> Unit,
@@ -184,7 +177,7 @@ fun RadioGroupWithSelectable(
         Icon(painter = icon, contentDescription = null)
         Text(text = textlabel)
         items.forEach { item ->
-            LabelledRadioButton(
+            CustomRadioButton(
                 modifier = Modifier
                     .selectable(
                         selected = item == selection,
@@ -200,7 +193,7 @@ fun RadioGroupWithSelectable(
 }
 
 @Composable
-fun MainDatePicker(
+fun CustomDatePicker(
     mDate: MutableState<String>,
     mYear: Int,
     mMonth: Int,
@@ -228,16 +221,16 @@ fun MainDatePicker(
 
             ) {
             Row() {
-                MainIcon(
+                CustomIcon(
                     icon = Icons.Default.DateRange,
                     description = stringResource(R.string.personal_data_birthdate)
                 )
-                MainText(text = stringResource(R.string.personal_data_birthdate))
+                CustomText(text = stringResource(R.string.personal_data_birthdate))
             }
-            MainText(text = "${mDate.value}")
+            CustomText(text = "${mDate.value}")
         }
         Spacer(modifier = Modifier.size(50.dp))
-        MainButton(
+        CustomButton(
             isEnable = true,
             name = stringResource(R.string.personal_data_birthdate_change),
             backColor = MaterialTheme.colorScheme.primary,
@@ -249,31 +242,29 @@ fun MainDatePicker(
 }
 
 @Composable
-fun DropdownDemo(
-    selectedName: MutableState<String>,
+fun CustomDropdown(
+    label: String,
     items: List<String>,
     onSelectedSchoolGradeOptionChange: (String) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
-
+    var selected by rememberSaveable { mutableStateOf("") }
     Box(
         modifier = Modifier
             .fillMaxWidth()
+            .absolutePadding(50.dp, 0.dp, 50.dp, 0.dp)
             .clickable(onClick = { expanded = true })
 //            .background(Color.White)
-            .border(1.dp, Color.Gray, shape = MaterialTheme.shapes.small)
+            .border(1.dp, Color.Gray, shape = MaterialTheme.shapes.extraSmall)
             .padding(6.dp),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            MainIcon(icon = painterResource(id = R.drawable.baseline_school_24), description = "")
-
-            Spacer(modifier = Modifier.weight(1f)) // Espaciado flexible
+            CustomIcon(icon = painterResource(id = R.drawable.baseline_school_24), description = "")
             Text(
-//                text = if (selectedName.value.isEmpty()) items[0] else selectedName.value,
-                text = selectedName.value,
-                modifier = Modifier.padding(4.dp)
+                text = if (selected.toString().isEmpty()) items[0] else selected,
+                modifier = Modifier.padding(4.dp).align(Alignment.CenterVertically)
             )
         }
     }
@@ -288,10 +279,10 @@ fun DropdownDemo(
         items.forEachIndexed { index, s ->
             DropdownMenuItem(
                 text = { Text(items[index]) },
-                enabled = !items[index].equals(stringResource(R.string.personal_data_level_schooling)),
+                enabled = !items[index].equals(label),
                 onClick = {
                     expanded = false
-                    selectedName.value = s
+                    selected = s
                     onSelectedSchoolGradeOptionChange(s)
                 }
             )

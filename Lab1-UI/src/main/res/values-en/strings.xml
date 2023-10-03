@@ -18,6 +18,33 @@
 
     <string name="contact_data_title">Contact Information</string>
     <string name="contact_data_go_back_to">Go Back To</string>
+    <string name="contact_data_phone">*Phone</string>
+    <string name="contact_data_address">Address</string>
+    <string name="contact_data_email">*Email</string>
+    <string name="contact_data_country">*Country</string>
+    <string name="contact_data_city">City</string>
+
+    <string name="country_1">Estados Unidos</string>
+    <string name="country_2">Canadá</string>
+    <string name="country_3">Reino Unido</string>
+    <string name="country_4">Australia</string>
+    <string name="country_5">Alemania</string>
+    <string name="country_6">Francia</string>
+    <string name="country_7">España</string>
+    <string name="country_8">Italia</string>
+    <string name="country_9">Japón</string>
+    <string name="country_10">China</string>
+    <string name="country_11">Brasil</string>
+    <string name="country_12">México</string>
+    <string name="country_13">India</string>
+    <string name="country_14">Sudáfrica</string>
+    <string name="country_15">Argentina</string>
+    <string name="country_16">Rusia</string>
+    <string name="country_17">Países Bajos</string>
+    <string name="country_18">Suecia</string>
+    <string name="country_19">Noruega</string>
+    <string name="country_20">Suiza</string>
 
     <string name="details_data_title">Details</string>
+    <string name="personal_data_send">Submit</string>
 </resources>
