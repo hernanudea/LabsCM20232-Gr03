@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.text.KeyboardOptions
@@ -65,8 +66,13 @@ fun TitleView(name: String) {
 }
 
 @Composable
-fun Space() {
-    Spacer(modifier = Modifier.height(10.dp))
+fun SpaceH() {
+    Spacer(modifier = Modifier.width(10.dp))
+}
+
+@Composable
+fun SpaceV() {
+    Spacer(modifier = Modifier.height(2.dp))
 }
 
 @Composable

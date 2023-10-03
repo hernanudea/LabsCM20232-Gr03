@@ -18,14 +18,12 @@ fun NavManager() {
             HomePersonalDataActivityView(navController)
         }
         composable(
-            "Contact/{id}/?{optional}", arguments = listOf(
-                navArgument("id") { type = NavType.StringType },
-                navArgument("optional") { type = NavType.StringType },
+            "Contact/{name}/", arguments = listOf(
+                navArgument("name") { type = NavType.StringType },
             )
         ) {
-            val id = it.arguments?.getString("id") ?: "0"
-            val optional = it.arguments?.getString("optional") ?: ""
-            ContactDataActivityView(navController, id, optional)
+            val name = it.arguments?.getString("name") ?: "0"
+            ContactDataActivityView(navController, name)
         }
         composable("Details"){
             HomeDetailsActivityView(navController = navController)

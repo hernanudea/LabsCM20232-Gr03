@@ -3,9 +3,7 @@ package co.edu.udea.compumovil.gr03_20232.lab1.views
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -17,19 +15,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import co.edu.udea.compumovil.gr03_20232.lab1.R
 import co.edu.udea.compumovil.gr03_20232.lab1.components.MainButton
 import co.edu.udea.compumovil.gr03_20232.lab1.components.MainIconButton
-import co.edu.udea.compumovil.gr03_20232.lab1.components.Space
+import co.edu.udea.compumovil.gr03_20232.lab1.components.SpaceV
 import co.edu.udea.compumovil.gr03_20232.lab1.components.TitleBar
 import co.edu.udea.compumovil.gr03_20232.lab1.components.TitleView
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ContactDataActivityView(navController: NavController, id: String, optional: String?) {
+fun ContactDataActivityView(navController: NavController, name: String) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -45,12 +42,12 @@ fun ContactDataActivityView(navController: NavController, id: String, optional: 
             )
         }
     ) {
-        ContentContactDataActivity(navController, id, optional)
+        ContentContactDataActivity(navController, name)
     }
 }
 
 @Composable
-fun ContentContactDataActivity(navController: NavController, name: String, lastName: String?) {
+fun ContentContactDataActivity(navController: NavController, name: String) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -59,16 +56,10 @@ fun ContentContactDataActivity(navController: NavController, name: String, lastN
 //        TitleView(name = "Details View")
 //        Space()
         TitleView(name = name)
-        Space()
-        if (lastName==""){
-            Spacer(modifier = Modifier.height(0.dp))
-        }else{
-            TitleView(name = lastName.orEmpty())
-        }
-//        MainButton(isEnable = true, name = stringResource(R.string.contact_data_go_back_to),
-//            backColor = MaterialTheme.colorScheme.primary, color = MaterialTheme.colorScheme.onPrimary) {
-//            navController.popBackStack()
-//        }
+        SpaceV()
+
+
+
         MainButton(isEnable = true,
             name = stringResource(R.string.personal_data_next),
             backColor = MaterialTheme.colorScheme.primary,
