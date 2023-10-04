@@ -4,11 +4,11 @@
     <string name="personal_data_title">Personal Information</string>
     <string name="personal_data_sex_men">Male</string>
     <string name="personal_data_sex_woman">Female</string>
-    <string name="personal_data_names">*First Names</string>
-    <string name="personal_data_last_name">*Last Names</string>
+    <string name="personal_data_names">First Names*</string>
+    <string name="personal_data_last_name">Last Names*</string>
     <string name="personal_data_sex">Sex:</string>
     <string name="personal_data_next">Next</string>
-    <string name="personal_data_birthdate">*Date of Birth:</string>
+    <string name="personal_data_birthdate">Date of Birth*</string>
     <string name="personal_data_birthdate_change">Change:</string>
     <string name="personal_data_level_schooling">Education Level:</string>
     <string name="personal_data_level_schooling_pri">Primary School</string>
@@ -18,10 +18,10 @@
 
     <string name="contact_data_title">Contact Information</string>
     <string name="contact_data_go_back_to">Go Back To</string>
-    <string name="contact_data_phone">*Phone</string>
+    <string name="contact_data_phone">Phone*</string>
     <string name="contact_data_address">Address</string>
-    <string name="contact_data_email">*Email</string>
-    <string name="contact_data_country">*Country</string>
+    <string name="contact_data_email">Email*</string>
+    <string name="contact_data_country">Country*</string>
     <string name="contact_data_city">City</string>
 
     <string name="country_1">Estados Unidos</string>

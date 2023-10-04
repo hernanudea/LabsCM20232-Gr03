@@ -48,12 +48,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import co.edu.udea.compumovil.gr03_20232.lab1.R
 import java.util.Date
 
@@ -245,6 +242,7 @@ fun CustomDatePicker(
 fun CustomDropdown(
     label: String,
     items: List<String>,
+    icon: Painter,
     onSelectedSchoolGradeOptionChange: (String) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -261,7 +259,8 @@ fun CustomDropdown(
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            CustomIcon(icon = painterResource(id = R.drawable.baseline_school_24), description = "")
+//            CustomIcon(icon = painterResource(id = R.drawable.baseline_school_24), description = "")
+            CustomIcon(icon = icon, description = "")
             Text(
                 text = if (selected.toString().isEmpty()) items[0] else selected,
                 modifier = Modifier.padding(4.dp).align(Alignment.CenterVertically)

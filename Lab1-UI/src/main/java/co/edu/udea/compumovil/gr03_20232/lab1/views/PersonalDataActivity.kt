@@ -88,103 +88,29 @@ fun ContentPersonalDataActivity(
     )
 
     val mDate = rememberSaveable { mutableStateOf("") }
-
     val painter = painterResource(id = R.drawable.baseline_gender_24)
 
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .padding(top = 25.dp)
             .padding(8.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
-
     ) {
         if (isPortrait) {
-            CustomOutlinedTextField(
-                value = appStateViewModel.name,
-                onValueChange = {
-                    appStateViewModel.name = it
-                    validateRequiredFieldsPersonalData(
-                        name = appStateViewModel.name,
-                        lastName = appStateViewModel.lastName,
-                        mDate = appStateViewModel.mDate
-                    )
-                },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Next,
-                    capitalization = KeyboardCapitalization.Words,
-                    autoCorrect = false
-                ),
-                leadingIcon = { CustomPersonIcon() },
-                label = stringResource(R.string.personal_data_names)
-            )
+            CustomOutlinedTextFieldName(appStateViewModel)
             SpaceV()
-            CustomOutlinedTextField(
-                value = appStateViewModel.lastName,
-                onValueChange = {
-                    appStateViewModel.lastName = it
-                    validateRequiredFieldsPersonalData(
-                        name = appStateViewModel.name,
-                        lastName = appStateViewModel.lastName,
-                        mDate = appStateViewModel.mDate
-                    )
-                },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Done,
-                    capitalization = KeyboardCapitalization.Words,
-                    autoCorrect = false
-                ),
-                leadingIcon = { CustomPersonIcon() },
-                label = stringResource(R.string.personal_data_last_name)
-            )
+            CustomOutlinedTextFieldLastMane(appStateViewModel)
+
         } else {
-            Row {
-                CustomOutlinedTextField(
-                    value = appStateViewModel.name,
-                    onValueChange = {
-                        appStateViewModel.name = it
-                        validateRequiredFieldsPersonalData(
-                            name = appStateViewModel.name,
-                            lastName = appStateViewModel.lastName,
-                            mDate = appStateViewModel.mDate
-                        )
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Text,
-                        imeAction = ImeAction.Next,
-                        capitalization = KeyboardCapitalization.Words,
-                        autoCorrect = false
-                    ),
-                    leadingIcon = { CustomPersonIcon() },
-                    label = stringResource(R.string.personal_data_names)
-                )
+            Row(modifier = Modifier.padding(top = 25.dp)) {
+                CustomOutlinedTextFieldName(appStateViewModel)
                 SpaceH()
-                CustomOutlinedTextField(
-                    value = appStateViewModel.lastName,
-                    onValueChange = {
-                        appStateViewModel.lastName = it
-                        validateRequiredFieldsPersonalData(
-                            name = appStateViewModel.name,
-                            lastName = appStateViewModel.lastName,
-                            mDate = appStateViewModel.mDate
-                        )
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Text,
-                        imeAction = ImeAction.Next,
-                        capitalization = KeyboardCapitalization.Words,
-                        autoCorrect = false
-                    ),
-                    leadingIcon = { CustomPersonIcon() },
-                    label = stringResource(R.string.personal_data_last_name)
-                )
+                CustomOutlinedTextFieldLastMane(appStateViewModel)
             }
         }
-
-        SpaceV()
-
+//        SpaceV()
         CustomRadioGroupSelectable(
             items = sexOptionsList,
             selection = appStateViewModel.currentSelectionSex,
@@ -197,7 +123,7 @@ fun ContentPersonalDataActivity(
                 .padding(16.dp)
                 .fillMaxWidth()
         )
-        SpaceV()
+//        SpaceV()
         val mContext = LocalContext.current
         val mCalendar = Calendar.getInstance()
 
@@ -214,44 +140,44 @@ fun ContentPersonalDataActivity(
             mContext = mContext
         ) { selectedDate ->
             appStateViewModel.mDate = selectedDate
-            validateRequiredFieldsPersonalData(
-                name = appStateViewModel.name,
-                lastName = appStateViewModel.lastName,
-                mDate = appStateViewModel.mDate
-            )
+            validateRequiredFieldsPersonalData(asvm = appStateViewModel)
         }
-        SpaceV()
+//        SpaceV()
 
         CustomDropdown(
             label = stringResource(R.string.personal_data_level_schooling),
             items = itemsLevelSchooling,
-            { newSelectedSchoolGradeOption ->
-                appStateViewModel.selectedSchoolGrade = newSelectedSchoolGradeOption
-            },
+            icon = painterResource(id = R.drawable.baseline_school_24)
         )
+        { newSelectedSchoolGradeOption ->
+            appStateViewModel.selectedSchoolGrade = newSelectedSchoolGradeOption
+        }
 
-        SpaceV()
-        Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.BottomEnd) {
-            Spacer(modifier = Modifier.height(50.dp))
+//        SpaceV()
+        Box(modifier = Modifier.fillMaxWidth()) {
+            if (isPortrait) {
+                Spacer(modifier = Modifier.height(30.dp))
+            }
             CustomButton(
                 isEnable = buttonIsActivePersonalData,
                 name = stringResource(R.string.personal_data_next),
                 backColor = MaterialTheme.colorScheme.primary,
                 color = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier
-//                    .align(Alignment.BottomEnd)
-                    .padding(25.dp)
+                    .align(Alignment.BottomEnd)
             ) {
                 val appStateJson = appStateViewModel.toJson()
 
                 println("\n\n**************************************************")
-                println(formatedStringPersonalData(
-                    appStateViewModel.name,
-                    appStateViewModel.lastName,
-                    appStateViewModel.mDate,
-                    appStateViewModel.currentSelectionSex,
-                    appStateViewModel.selectedSchoolGrade
-                ))
+                println(
+                    formatedStringPersonalData(
+                        appStateViewModel.name,
+                        appStateViewModel.lastName,
+                        appStateViewModel.mDate,
+                        appStateViewModel.currentSelectionSex,
+                        appStateViewModel.selectedSchoolGrade
+                    )
+                )
                 println("**************************************************\n\n")
                 println(appStateJson)
                 println("**************************************************\n\n")
@@ -263,14 +189,49 @@ fun ContentPersonalDataActivity(
     }
 }
 
-fun validateRequiredFieldsPersonalData(
-    name: String,
-    lastName: String,
-    mDate: String
-) {
-    buttonIsActivePersonalData = (lastName.isNotBlank() && lastName.isNotEmpty()
-            && name.isNotBlank() && name.isNotEmpty()
-            && mDate.isNotBlank() && mDate.isNotEmpty()
+@Composable
+fun CustomOutlinedTextFieldLastMane(appStateViewModel: AppStateViewModel) {
+    CustomOutlinedTextField(
+        value = appStateViewModel.lastName,
+        onValueChange = {
+            appStateViewModel.lastName = it
+            validateRequiredFieldsPersonalData(asvm = appStateViewModel)
+        },
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Done,
+            capitalization = KeyboardCapitalization.Words,
+            autoCorrect = false
+        ),
+        leadingIcon = { CustomPersonIcon() },
+        label = stringResource(R.string.personal_data_last_name)
+    )
+
+}
+
+@Composable
+fun CustomOutlinedTextFieldName(appStateViewModel: AppStateViewModel) {
+    CustomOutlinedTextField(
+        value = appStateViewModel.name,
+        onValueChange = {
+            appStateViewModel.name = it
+            validateRequiredFieldsPersonalData(asvm = appStateViewModel)
+        },
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Next,
+            capitalization = KeyboardCapitalization.Words,
+            autoCorrect = false
+        ),
+        leadingIcon = { CustomPersonIcon() },
+        label = stringResource(R.string.personal_data_names)
+    )
+}
+
+fun validateRequiredFieldsPersonalData(asvm: AppStateViewModel) {
+    buttonIsActivePersonalData = (asvm.lastName.isNotBlank() && asvm.lastName.isNotEmpty()
+            && asvm.name.isNotBlank() && asvm.name.isNotEmpty()
+            && asvm.mDate.isNotBlank() && asvm.mDate.isNotEmpty()
             )
 }
 

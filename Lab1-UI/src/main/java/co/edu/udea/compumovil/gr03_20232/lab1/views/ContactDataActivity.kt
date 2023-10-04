@@ -5,12 +5,16 @@ import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -20,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -30,9 +35,10 @@ import androidx.navigation.NavController
 import co.edu.udea.compumovil.gr03_20232.lab1.R
 import co.edu.udea.compumovil.gr03_20232.lab1.components.CustomButton
 import co.edu.udea.compumovil.gr03_20232.lab1.components.CustomDropdown
+import co.edu.udea.compumovil.gr03_20232.lab1.components.CustomIcon
 import co.edu.udea.compumovil.gr03_20232.lab1.components.CustomOutlinedTextField
-import co.edu.udea.compumovil.gr03_20232.lab1.components.CustomPersonIcon
 import co.edu.udea.compumovil.gr03_20232.lab1.components.MainIconButton
+import co.edu.udea.compumovil.gr03_20232.lab1.components.SpaceH
 import co.edu.udea.compumovil.gr03_20232.lab1.components.SpaceV
 import co.edu.udea.compumovil.gr03_20232.lab1.components.TitleBar
 
@@ -95,84 +101,35 @@ fun ContentContactDataActivity(
         stringResource(R.string.city_7),
     )
 
-//    var address by rememberSaveable { mutableStateOf("") }
-//    var phone by rememberSaveable { mutableStateOf("") }
-//    var email by rememberSaveable { mutableStateOf("") }
-//    var selectedCountry by rememberSaveable { mutableStateOf("") }
-//    var selectedCity by rememberSaveable { mutableStateOf("") }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .padding(top = 50.dp)
             .padding(8.dp),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+        horizontalAlignment = Alignment.CenterHorizontally,
 
-
-        CustomOutlinedTextField(
-            value = appStateViewModel.phone,
-            onValueChange = {
-                appStateViewModel.phone = it
-                validateRequiredFieldsContactData(
-                    phone = appStateViewModel.phone,
-                    email = appStateViewModel.email,
-                    country = appStateViewModel.selectedCountry
-                )
-            },
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Phone,
-                imeAction = ImeAction.Next,
-                autoCorrect = false
-            ),
-            leadingIcon = { CustomPersonIcon() },
-            label = stringResource(R.string.contact_data_phone)
-        )
-
-        SpaceV()
-        CustomOutlinedTextField(
-            value = appStateViewModel.email,
-            onValueChange = {
-                appStateViewModel.email = it
-                validateRequiredFieldsContactData(
-                    phone = appStateViewModel.phone,
-                    email = appStateViewModel.email,
-                    country = appStateViewModel.selectedCountry
-                )
-            },
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Email,
-                imeAction = ImeAction.Next,
-                capitalization = KeyboardCapitalization.Words,
-                autoCorrect = false
-            ),
-            leadingIcon = { CustomPersonIcon() },
-            label = stringResource(R.string.contact_data_email)
-        )
-        SpaceV()
-        CustomDropdown(
-            label = stringResource(R.string.contact_data_country),
-            items = countryList
-        ) { newSelectedCountry ->
-            appStateViewModel.selectedCountry = newSelectedCountry
-            validateRequiredFieldsContactData(
-                phone = appStateViewModel.phone,
-                email = appStateViewModel.email,
-                country = appStateViewModel.selectedCountry
-            )
+        ) {
+        if (isPortrait) {
+            CustomOutlinedTextFieldPhone(appStateViewModel)
+            SpaceV()
+            CustomOutlinedTextFieldEmail(appStateViewModel)
+        } else {
+            Row() {
+                CustomOutlinedTextFieldPhone(appStateViewModel)
+                SpaceH()
+                CustomOutlinedTextFieldEmail(appStateViewModel)
+            }
         }
         SpaceV()
-        CustomDropdown(
-            label = stringResource(R.string.contact_data_city),
-            items = cityList
-        ) { newSelectedCity ->
-            appStateViewModel.selectedCity = newSelectedCity
-        }
+        CustomDropdownCountry(appStateViewModel, countryList)
+        SpaceV()
+        CustomDropdownCity(appStateViewModel, cityList)
         SpaceV()
         CustomOutlinedTextField(
             value = appStateViewModel.address,
             onValueChange = {
-                appStateViewModel.address = it;
+                appStateViewModel.address = it
             },
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,
@@ -180,7 +137,12 @@ fun ContentContactDataActivity(
                 capitalization = KeyboardCapitalization.Words,
                 autoCorrect = false
             ),
-            leadingIcon = { CustomPersonIcon() },
+            leadingIcon = {
+                CustomIcon(
+                    icon = Icons.Default.Place,
+                    description = stringResource(id = R.string.contact_data_address)
+                )
+            },
             label = stringResource(R.string.contact_data_address)
         )
         Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.BottomEnd) {
@@ -191,24 +153,96 @@ fun ContentContactDataActivity(
                 color = MaterialTheme.colorScheme.onPrimary
             ) {
                 println("\n\n**************************************************")
-                println(formatedStringContactData(
-                    phone = appStateViewModel.phone,
-                    address = appStateViewModel.address,
-                    email = appStateViewModel.email,
-                    country = appStateViewModel.selectedCountry,
-                    city = appStateViewModel.selectedCity))
+                println(
+                    formatedStringContactData(
+                        phone = appStateViewModel.phone,
+                        address = appStateViewModel.address,
+                        email = appStateViewModel.email,
+                        country = appStateViewModel.selectedCountry,
+                        city = appStateViewModel.selectedCity
+                    )
+                )
                 println("\n\n**************************************************")
-
 //            navController.navigate("Details")
             }
         }
     }
 }
 
-fun validateRequiredFieldsContactData(phone: String, email: String, country: String) {
-    buttonIsActiveContactData = (email.isNotBlank() && email.isNotEmpty()
-            && phone.isNotBlank() && phone.isNotEmpty()
-            && country.isNotBlank() && country.isNotEmpty()
+@Composable
+fun CustomDropdownCity(appStateViewModel: AppStateViewModel, cityList: List<String>) {
+    CustomDropdown(
+        label = stringResource(R.string.contact_data_city),
+        items = cityList,
+        icon = painterResource(id = R.drawable.baseline_location_city_24)
+    ) { newSelectedCity ->
+        appStateViewModel.selectedCity = newSelectedCity
+    }
+}
+
+@Composable
+fun CustomDropdownCountry(appStateViewModel: AppStateViewModel, countryList: List<String>) {
+    CustomDropdown(
+        label = stringResource(R.string.contact_data_country),
+        items = countryList,
+        icon = painterResource(id = R.drawable.baseline_language_24)
+    ) { newSelectedCountry ->
+        appStateViewModel.selectedCountry = newSelectedCountry
+        validateRequiredFieldsContactData(appStateViewModel)
+    }
+}
+
+@Composable
+fun CustomOutlinedTextFieldEmail(appStateViewModel: AppStateViewModel) {
+    CustomOutlinedTextField(
+        value = appStateViewModel.email,
+        onValueChange = {
+            appStateViewModel.email = it
+            validateRequiredFieldsContactData(asvm = appStateViewModel)
+        },
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Email,
+            imeAction = ImeAction.Next,
+            capitalization = KeyboardCapitalization.Words,
+            autoCorrect = false
+        ),
+        leadingIcon = {
+            CustomIcon(
+                icon = Icons.Default.Email,
+                description = stringResource(id = R.string.contact_data_email)
+            )
+        },
+        label = stringResource(R.string.contact_data_email)
+    )
+}
+
+@Composable
+fun CustomOutlinedTextFieldPhone(appStateViewModel: AppStateViewModel) {
+    CustomOutlinedTextField(
+        value = appStateViewModel.phone,
+        onValueChange = {
+            appStateViewModel.phone = it
+            validateRequiredFieldsContactData(asvm = appStateViewModel)
+        },
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Phone,
+            imeAction = ImeAction.Next,
+            autoCorrect = false
+        ),
+        leadingIcon = {
+            CustomIcon(
+                icon = Icons.Default.Phone,
+                description = stringResource(id = R.string.contact_data_phone)
+            )
+        },
+        label = stringResource(R.string.contact_data_phone)
+    )
+}
+
+fun validateRequiredFieldsContactData(asvm: AppStateViewModel) {
+    buttonIsActiveContactData = (asvm.email.isNotBlank() && asvm.email.isNotEmpty()
+            && asvm.phone.isNotBlank() && asvm.phone.isNotEmpty()
+            && asvm.selectedCountry.isNotBlank() && asvm.selectedCountry.isNotEmpty()
             )
 }
 
